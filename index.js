@@ -148,9 +148,10 @@ function OneSignal(apiKey, appId, sandbox) {
    * @param  {String} message      the notification message
    * @param  {Object} data         any custom data
    * @param  {Array}  oneSignalIds a list of OneSignal devices ids
+   * @param  {Object} extra any extra data https://documentation.onesignal.com/reference
    * @return {Promise}
    */
-  this.createNotification = function(message, data, oneSignalIds) {
+  this.createNotification = function(message, data, oneSignalIds, extra) {
 
     var options = {
       method: 'POST',
@@ -160,14 +161,14 @@ function OneSignal(apiKey, appId, sandbox) {
         'cache-control': 'no-cache',
         'content-type': 'application/json; charset=utf-8' 
       },
-      body: JSON.stringify({
+      body: JSON.stringify(Object.assign({}, extra, {
         app_id: APP_ID,
         include_player_ids: oneSignalIds,
         contents: {
           en: message
         },
         data: data
-      })
+      }))
     };
 
     return new Promise(function(resolve, reject) {
